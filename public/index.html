@@ -7,13 +7,24 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>TO-DO List</h1>
-    <form id="add-form">
-      <input type="text" id="todo-input" placeholder="Add a new task..." autocomplete="off" required />
-      <button type="submit">Add</button>
-    </form>
-    <ul id="todo-list"></ul>
+  <div class="layout">
+    <div class="container projects-panel">
+      <h1>Projects</h1>
+      <form id="project-form">
+        <input type="text" id="project-input" placeholder="New project name..." autocomplete="off" required />
+        <button type="submit">Add</button>
+      </form>
+      <ul id="project-list"></ul>
+    </div>
+
+    <div class="container todos-panel">
+      <h1 id="current-project-heading">Select a project</h1>
+      <form id="add-form">
+        <input type="text" id="todo-input" placeholder="Add a new task..." autocomplete="off" required disabled />
+        <button type="submit" disabled>Add</button>
+      </form>
+      <ul id="todo-list"></ul>
+    </div>
   </div>
   <script src="app.js"></script>
 </body>
