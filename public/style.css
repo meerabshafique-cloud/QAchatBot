@@ -10,13 +10,35 @@ body {
   color: #172b4d;
 }
 
-.container {
-  max-width: 480px;
+.layout {
+  display: flex;
+  gap: 1.5rem;
+  max-width: 900px;
   margin: 0 auto;
+  align-items: flex-start;
+}
+
+.container {
+  flex: 1;
+  min-width: 0;
   background: #fff;
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.projects-panel {
+  max-width: 320px;
+}
+
+.todos-panel {
+  max-width: 480px;
+}
+
+#add-form input:disabled,
+#add-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 h1 {
@@ -90,5 +112,53 @@ h1 {
 }
 
 .todo-item button:hover {
+  text-decoration: underline;
+}
+
+#project-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ebecf0;
+}
+
+.project-item:last-child {
+  border-bottom: none;
+}
+
+.project-item.active {
+  background: #e6effc;
+  border-radius: 4px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.project-name {
+  flex: 1;
+  cursor: pointer;
+  word-break: break-word;
+}
+
+.project-item.active .project-name {
+  font-weight: 600;
+  color: #0052cc;
+}
+
+.project-item button {
+  border: none;
+  background: transparent;
+  color: #42526e;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.project-item button:hover {
   text-decoration: underline;
 }
