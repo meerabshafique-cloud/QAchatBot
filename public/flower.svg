@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="200" height="240">
+  <line x1="100" y1="140" x2="100" y2="220" stroke="#3a7d44" stroke-width="4" />
+  <path d="M100 200 Q80 190 70 205" fill="none" stroke="#3a7d44" stroke-width="4" />
+  <path d="M100 180 Q120 170 130 185" fill="none" stroke="#3a7d44" stroke-width="4" />
+  <ellipse cx="65" cy="210" rx="16" ry="8" fill="#4caf50" transform="rotate(-20 65 210)" />
+  <ellipse cx="135" cy="190" rx="16" ry="8" fill="#4caf50" transform="rotate(20 135 190)" />
+  <g>
+    <ellipse cx="100" cy="105" rx="18" ry="32" fill="#f48fb1" />
+    <ellipse cx="100" cy="105" rx="18" ry="32" fill="#f48fb1" transform="rotate(60 100 105)" />
+    <ellipse cx="100" cy="105" rx="18" ry="32" fill="#f48fb1" transform="rotate(120 100 105)" />
+    <ellipse cx="100" cy="105" rx="18" ry="32" fill="#f48fb1" transform="rotate(180 100 105)" />
+    <ellipse cx="100" cy="105" rx="18" ry="32" fill="#f48fb1" transform="rotate(240 100 105)" />
+    <ellipse cx="100" cy="105" rx="18" ry="32" fill="#f48fb1" transform="rotate(300 100 105)" />
+  </g>
+  <circle cx="100" cy="105" r="14" fill="#fdd835" />
+</svg>
