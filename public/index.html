@@ -14,6 +14,12 @@
     </div>
     <form id="add-form">
       <input type="text" id="todo-input" placeholder="Add a new task..." autocomplete="off" required />
+      <fieldset class="gender-group">
+        <legend>Gender</legend>
+        <label><input type="checkbox" name="gender" value="Male" /> Male</label>
+        <label><input type="checkbox" name="gender" value="Female" /> Female</label>
+        <label><input type="checkbox" name="gender" value="Other" /> Other</label>
+      </fieldset>
       <button type="submit">Add</button>
     </form>
     <ul id="todo-list"></ul>

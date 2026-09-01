@@ -22,6 +22,14 @@ function renderTodos(todos) {
     const span = document.createElement('span');
     span.textContent = todo.text;
 
+    if (Array.isArray(todo.gender) && todo.gender.length) {
+      const genderSpan = document.createElement('span');
+      genderSpan.className = 'todo-gender';
+      genderSpan.textContent = `(${todo.gender.join(', ')})`;
+      span.appendChild(document.createTextNode(' '));
+      span.appendChild(genderSpan);
+    }
+
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.addEventListener('click', () => deleteTodo(todo.id));
@@ -33,11 +41,11 @@ function renderTodos(todos) {
   });
 }
 
-async function addTodo(text) {
+async function addTodo(text, gender) {
   await fetch('/api/todos', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text }),
+    body: JSON.stringify({ text, gender }),
   });
   await loadTodos();
 }
@@ -60,8 +68,12 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
   const text = input.value.trim();
   if (!text) return;
-  addTodo(text);
+  const gender = Array.from(form.querySelectorAll('input[name="gender"]:checked')).map(
+    (el) => el.value
+  );
+  addTodo(text, gender);
   input.value = '';
+  form.querySelectorAll('input[name="gender"]').forEach((el) => (el.checked = false));
 });
 
 loadTodos();

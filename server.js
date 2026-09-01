@@ -33,10 +33,14 @@ app.post('/api/todos', (req, res) => {
   if (!text) {
     return res.status(400).json({ error: 'text is required' });
   }
+  const gender = Array.isArray(req.body.gender)
+    ? req.body.gender.filter((g) => typeof g === 'string')
+    : [];
   const todos = readTodos();
   const todo = {
     id: crypto.randomUUID(),
     text,
+    gender,
     done: false,
     createdAt: new Date().toISOString(),
   };
