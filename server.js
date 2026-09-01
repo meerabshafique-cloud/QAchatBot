@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const currency = require('./currency');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -70,6 +71,20 @@ app.delete('/api/todos/:id', (req, res) => {
   const [removed] = todos.splice(index, 1);
   writeTodos(todos);
   res.json(removed);
+});
+
+app.get('/api/currency/rate', (req, res) => {
+  res.json({ pkrPerUsd: currency.PKR_PER_USD });
+});
+
+app.post('/api/currency/convert', (req, res) => {
+  const { amount, from, to } = req.body;
+  try {
+    const result = currency.convert({ amount, from, to });
+    res.json({ amount: Number(amount), from, to, result });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
 app.listen(PORT, () => {
