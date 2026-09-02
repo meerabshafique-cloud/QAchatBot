@@ -3,6 +3,9 @@ const form = document.getElementById('add-form');
 const input = document.getElementById('todo-input');
 const list = document.getElementById('todo-list');
 const answerToggle = document.getElementById('answer-toggle');
+const dateInput = document.getElementById('todo-date');
+
+dateInput.value = new Date().toISOString().slice(0, 10);
 
 answerToggle.addEventListener('click', () => {
   const next = answerToggle.dataset.value === 'Yes' ? 'No' : 'Yes';
