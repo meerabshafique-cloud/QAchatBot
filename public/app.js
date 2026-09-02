@@ -2,6 +2,13 @@
 const form = document.getElementById('add-form');
 const input = document.getElementById('todo-input');
 const list = document.getElementById('todo-list');
+const answerToggle = document.getElementById('answer-toggle');
+
+answerToggle.addEventListener('click', () => {
+  const next = answerToggle.dataset.value === 'Yes' ? 'No' : 'Yes';
+  answerToggle.dataset.value = next;
+  answerToggle.textContent = next;
+});
 
 async function loadTodos() {
   const res = await fetch('/api/todos');
@@ -31,6 +38,12 @@ function renderTodos(todos) {
       span.appendChild(genderSpan);
     }
 
+    const answerSpan = document.createElement('span');
+    answerSpan.className = 'todo-answer';
+    answerSpan.textContent = `[${todo.answer === 'Yes' ? 'Yes' : 'No'}]`;
+    span.appendChild(document.createTextNode(' '));
+    span.appendChild(answerSpan);
+
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.addEventListener('click', () => deleteTodo(todo.id));
@@ -42,11 +55,11 @@ function renderTodos(todos) {
   });
 }
 
-async function addTodo(text, gender) {
+async function addTodo(text, gender, answer) {
   await fetch('/api/todos', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text, gender }),
+    body: JSON.stringify({ text, gender, answer }),
   });
   await loadTodos();
 }
@@ -72,9 +85,12 @@ form.addEventListener('submit', (e) => {
   const gender = Array.from(form.querySelectorAll('input[name="gender"]:checked')).map(
     (el) => el.value
   );
-  addTodo(text, gender);
+  const answer = answerToggle.dataset.value;
+  addTodo(text, gender, answer);
   input.value = '';
   form.querySelectorAll('input[name="gender"]').forEach((el) => (el.checked = false));
+  answerToggle.dataset.value = 'No';
+  answerToggle.textContent = 'No';
 });
 
 loadTodos();
