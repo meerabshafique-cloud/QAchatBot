@@ -61,7 +61,14 @@ async function addTodo(text, gender, answer) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ text, gender, answer }),
   });
-  await loadTodos();
+  await const showFlowerBtn = document.getElementById('show-flower-btn');
+const flowerDisplay = document.getElementById('flower-display');
+
+showFlowerBtn.addEventListener('click', () => {
+  flowerDisplay.classList.toggle('hidden');
+});
+
+loadTodos();
 }
 
 async function toggleDone(id, done) {
