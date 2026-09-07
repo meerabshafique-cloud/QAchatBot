@@ -1,0 +1,15 @@
+{
+  "name": "currency-converter",
+  "version": "1.0.0",
+  "description": "Simple currency conversion app using a live exchange-rate API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
