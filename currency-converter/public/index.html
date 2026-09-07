@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Converter</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>Currency Converter</h1>
+    <form id="convert-form">
+      <label for="amount">Amount</label>
+      <input type="number" id="amount" name="amount" min="0" step="any" value="1" required />
+
+      <div class="currency-row">
+        <div>
+          <label for="from">From</label>
+          <select id="from" name="from" required></select>
+        </div>
+        <button type="button" id="swap" aria-label="Swap currencies">&#8646;</button>
+        <div>
+          <label for="to">To</label>
+          <select id="to" name="to" required></select>
+        </div>
+      </div>
+
+      <button type="submit">Convert</button>
+    </form>
+
+    <div id="result" class="result"></div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
