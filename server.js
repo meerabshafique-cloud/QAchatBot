@@ -5,12 +5,13 @@ const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DATA_FILE = path.join(__dirname, 'data', 'todos.json');
+const DATA_FILE = path.join(__dirname, 'data', 'tasks.json');
+const STATUSES = ['todo', 'in-progress', 'done'];
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-function readTodos() {
+function readTasks() {
   try {
     const raw = fs.readFileSync(DATA_FILE, 'utf8');
     return raw.trim() ? JSON.parse(raw) : [];
@@ -20,64 +21,73 @@ function readTodos() {
   }
 }
 
-function writeTodos(todos) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(todos, null, 2));
+function writeTasks(tasks) {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(tasks, null, 2));
 }
 
-app.get('/api/todos', (req, res) => {
-  res.json(readTodos());
+app.get('/api/tasks', (req, res) => {
+  res.json(readTasks());
 });
 
-app.post('/api/todos', (req, res) => {
-  const text = (req.body.text || '').trim();
-  if (!text) {
-    return res.status(400).json({ error: 'text is required' });
+app.post('/api/tasks', (req, res) => {
+  const title = (req.body.title || '').trim();
+  if (!title) {
+    return res.status(400).json({ error: 'title is required' });
   }
-  const gender = Array.isArray(req.body.gender)
-    ? req.body.gender.filter((g) => typeof g === 'string')
-    : [];
-  const answer = req.body.answer === 'Yes' ? 'Yes' : 'No';
-  const todos = readTodos();
-  const todo = {
+  const description = typeof req.body.description === 'string' ? req.body.description.trim() : '';
+  let status = 'todo';
+  if (typeof req.body.status === 'string' && req.body.status) {
+    if (!STATUSES.includes(req.body.status)) {
+      return res.status(400).json({ error: `status must be one of ${STATUSES.join(', ')}` });
+    }
+    status = req.body.status;
+  }
+  const tasks = readTasks();
+  const task = {
     id: crypto.randomUUID(),
-    text,
-    gender,
-    answer,
-    done: false,
+    title,
+    description,
+    status,
     createdAt: new Date().toISOString(),
   };
-  todos.push(todo);
-  writeTodos(todos);
-  res.status(201).json(todo);
+  tasks.push(task);
+  writeTasks(tasks);
+  res.status(201).json(task);
 });
 
-app.put('/api/todos/:id', (req, res) => {
-  const todos = readTodos();
-  const todo = todos.find((t) => t.id === req.params.id);
-  if (!todo) {
-    return res.status(404).json({ error: 'todo not found' });
+app.put('/api/tasks/:id', (req, res) => {
+  const tasks = readTasks();
+  const task = tasks.find((t) => t.id === req.params.id);
+  if (!task) {
+    return res.status(404).json({ error: 'task not found' });
   }
-  if (typeof req.body.text === 'string') {
-    todo.text = req.body.text.trim();
+  if (typeof req.body.title === 'string') {
+    task.title = req.body.title.trim();
   }
-  if (typeof req.body.done === 'boolean') {
-    todo.done = req.body.done;
+  if (typeof req.body.description === 'string') {
+    task.description = req.body.description.trim();
   }
-  writeTodos(todos);
-  res.json(todo);
+  if (typeof req.body.status === 'string') {
+    if (!STATUSES.includes(req.body.status)) {
+      return res.status(400).json({ error: `status must be one of ${STATUSES.join(', ')}` });
+    }
+    task.status = req.body.status;
+  }
+  writeTasks(tasks);
+  res.json(task);
 });
 
-app.delete('/api/todos/:id', (req, res) => {
-  const todos = readTodos();
-  const index = todos.findIndex((t) => t.id === req.params.id);
+app.delete('/api/tasks/:id', (req, res) => {
+  const tasks = readTasks();
+  const index = tasks.findIndex((t) => t.id === req.params.id);
   if (index === -1) {
-    return res.status(404).json({ error: 'todo not found' });
+    return res.status(404).json({ error: 'task not found' });
   }
-  const [removed] = todos.splice(index, 1);
-  writeTodos(todos);
+  const [removed] = tasks.splice(index, 1);
+  writeTasks(tasks);
   res.json(removed);
 });
 
 app.listen(PORT, () => {
-  console.log(`QAchatBot TO-DO app listening on http://localhost:${PORT}`);
+  console.log(`QAchatBot Task Manager listening on http://localhost:${PORT}`);
 });

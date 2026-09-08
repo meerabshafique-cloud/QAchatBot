@@ -1,96 +1,98 @@
-// Client-side script for the TO-DO list app
+// Client-side script for the Task Manager app
 const form = document.getElementById('add-form');
-const input = document.getElementById('todo-input');
-const list = document.getElementById('todo-list');
-const answerToggle = document.getElementById('answer-toggle');
+const titleInput = document.getElementById('title-input');
+const descriptionInput = document.getElementById('description-input');
+const statusInput = document.getElementById('status-input');
+const list = document.getElementById('task-list');
 
-answerToggle.addEventListener('click', () => {
-  const next = answerToggle.dataset.value === 'Yes' ? 'No' : 'Yes';
-  answerToggle.dataset.value = next;
-  answerToggle.textContent = next;
-});
-
-async function loadTodos() {
-  const res = await fetch('/api/todos');
-  const todos = await res.json();
-  renderTodos(todos);
+async function loadTasks() {
+  const res = await fetch('/api/tasks');
+  const tasks = await res.json();
+  renderTasks(tasks);
 }
 
-function renderTodos(todos) {
+function renderTasks(tasks) {
   list.innerHTML = '';
-  todos.forEach((todo) => {
+  tasks.forEach((task) => {
     const li = document.createElement('li');
-    li.className = 'todo-item' + (todo.done ? ' done' : '');
+    li.className = 'task-item';
 
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = todo.done;
-    checkbox.addEventListener('change', () => toggleDone(todo.id, checkbox.checked));
+    const info = document.createElement('div');
+    info.className = 'task-info';
 
-    const span = document.createElement('span');
-    span.textContent = todo.text;
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'task-title';
+    titleSpan.textContent = task.title;
+    info.appendChild(titleSpan);
 
-    if (Array.isArray(todo.gender) && todo.gender.length) {
-      const genderSpan = document.createElement('span');
-      genderSpan.className = 'todo-gender';
-      genderSpan.textContent = `(${todo.gender.join(', ')})`;
-      span.appendChild(document.createTextNode(' '));
-      span.appendChild(genderSpan);
+    if (task.description) {
+      const descSpan = document.createElement('span');
+      descSpan.className = 'task-description';
+      descSpan.textContent = task.description;
+      info.appendChild(descSpan);
     }
 
-    const answerSpan = document.createElement('span');
-    answerSpan.className = 'todo-answer';
-    answerSpan.textContent = `[${todo.answer === 'Yes' ? 'Yes' : 'No'}]`;
-    span.appendChild(document.createTextNode(' '));
-    span.appendChild(answerSpan);
+    const statusSelect = document.createElement('select');
+    statusSelect.className = `status-select status-${task.status}`;
+    ['todo', 'in-progress', 'done'].forEach((status) => {
+      const option = document.createElement('option');
+      option.value = status;
+      option.textContent = statusLabel(status);
+      option.selected = status === task.status;
+      statusSelect.appendChild(option);
+    });
+    statusSelect.addEventListener('change', () => updateTaskStatus(task.id, statusSelect.value));
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
-    deleteBtn.addEventListener('click', () => deleteTodo(todo.id));
+    deleteBtn.addEventListener('click', () => deleteTask(task.id));
 
-    li.appendChild(checkbox);
-    li.appendChild(span);
+    li.appendChild(info);
+    li.appendChild(statusSelect);
     li.appendChild(deleteBtn);
     list.appendChild(li);
   });
 }
 
-async function addTodo(text, gender, answer) {
-  await fetch('/api/todos', {
+function statusLabel(status) {
+  if (status === 'in-progress') return 'In Progress';
+  if (status === 'done') return 'Done';
+  return 'Todo';
+}
+
+async function addTask(title, description, status) {
+  await fetch('/api/tasks', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text, gender, answer }),
+    body: JSON.stringify({ title, description, status }),
   });
-  await loadTodos();
+  await loadTasks();
 }
 
-async function toggleDone(id, done) {
-  await fetch(`/api/todos/${id}`, {
+async function updateTaskStatus(id, status) {
+  await fetch(`/api/tasks/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ done }),
+    body: JSON.stringify({ status }),
   });
-  await loadTodos();
+  await loadTasks();
 }
 
-async function deleteTodo(id) {
-  await fetch(`/api/todos/${id}`, { method: 'DELETE' });
-  await loadTodos();
+async function deleteTask(id) {
+  await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+  await loadTasks();
 }
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  const text = input.value.trim();
-  if (!text) return;
-  const gender = Array.from(form.querySelectorAll('input[name="gender"]:checked')).map(
-    (el) => el.value
-  );
-  const answer = answerToggle.dataset.value;
-  addTodo(text, gender, answer);
-  input.value = '';
-  form.querySelectorAll('input[name="gender"]').forEach((el) => (el.checked = false));
-  answerToggle.dataset.value = 'No';
-  answerToggle.textContent = 'No';
+  const title = titleInput.value.trim();
+  if (!title) return;
+  const description = descriptionInput.value.trim();
+  const status = statusInput.value;
+  addTask(title, description, status);
+  titleInput.value = '';
+  descriptionInput.value = '';
+  statusInput.value = 'todo';
 });
 
-loadTodos();
+loadTasks();
