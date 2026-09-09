@@ -1,4 +1,4 @@
-/* Stylesheet for the TO-DO list app */
+/* Stylesheet for the Task Manager app */
 * {
   box-sizing: border-box;
 }
@@ -39,76 +39,36 @@ h1 {
 
 #add-form {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
 
-#todo-input {
+#title-input {
   flex: 1;
+  min-width: 100%;
   padding: 0.5rem;
   border: 1px solid #dfe1e6;
   border-radius: 4px;
   font-size: 0.95rem;
 }
 
-.gender-group {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+#description-input {
+  flex: 1;
+  min-width: 100%;
+  padding: 0.5rem;
   border: 1px solid #dfe1e6;
   border-radius: 4px;
-  padding: 0.25rem 0.5rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical;
 }
 
-.gender-group legend {
-  padding: 0 0.25rem;
-  font-size: 0.75rem;
-  color: #5e6c84;
-}
-
-.gender-group label {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.85rem;
-  white-space: nowrap;
-}
-
-.answer-group {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+#status-input {
+  padding: 0.5rem;
   border: 1px solid #dfe1e6;
   border-radius: 4px;
-  padding: 0.25rem 0.5rem;
-}
-
-.answer-group legend {
-  padding: 0 0.25rem;
-  font-size: 0.75rem;
-  color: #5e6c84;
-}
-
-#answer-toggle {
-  padding: 0.25rem 0.75rem;
-  border: 1px solid #dfe1e6;
-  border-radius: 4px;
-  background: #f4f5f7;
-  color: #172b4d;
-  cursor: pointer;
-  font-size: 0.85rem;
-}
-
-#answer-toggle[data-value="Yes"] {
-  background: #0052cc;
-  border-color: #0052cc;
-  color: #fff;
-}
-
-.todo-answer {
-  flex: 0 0 auto;
-  font-size: 0.8rem;
-  color: #5e6c84;
+  font-size: 0.9rem;
 }
 
 #add-form button {
@@ -118,20 +78,15 @@ h1 {
   background: #0052cc;
   color: #fff;
   cursor: pointer;
-  font-size: 0.95rem;
 }
 
-#add-form button:hover {
-  background: #0747a6;
-}
-
-#todo-list {
+#task-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.todo-item {
+.task-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -139,21 +94,53 @@ h1 {
   border-bottom: 1px solid #ebecf0;
 }
 
-.todo-item:last-child {
+.task-item:last-child {
   border-bottom: none;
 }
 
-.todo-item span {
+.task-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.task-title {
   word-break: break-word;
+  font-weight: 500;
 }
 
-.todo-item.done span {
-  text-decoration: line-through;
-  color: #97a0af;
+.task-description {
+  word-break: break-word;
+  font-size: 0.85rem;
+  color: #5e6c84;
 }
 
-.todo-item button {
+.status-select {
+  flex: 0 0 auto;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #dfe1e6;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.status-select.status-todo {
+  background: #dfe1e6;
+  color: #172b4d;
+}
+
+.status-select.status-in-progress {
+  background: #fff0b3;
+  color: #7f5f01;
+}
+
+.status-select.status-done {
+  background: #e3fcef;
+  color: #006644;
+}
+
+.task-item button {
   border: none;
   background: transparent;
   color: #de350b;
@@ -161,6 +148,6 @@ h1 {
   font-size: 0.85rem;
 }
 
-.todo-item button:hover {
+.task-item button:hover {
   text-decoration: underline;
 }

@@ -1,33 +1,29 @@
-<!-- Main page markup for the TO-DO list app -->
+<!-- Main page markup for the Task Manager app -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TO-DO List</title>
+  <title>Task Manager</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <div class="header">
       <img src="logo.svg" alt="Logo" class="logo" />
-      <h1>TO-DO List</h1>
+      <h1>Task Manager</h1>
     </div>
     <form id="add-form">
-      <input type="text" id="todo-input" placeholder="Add a new task..." autocomplete="off" required />
-      <fieldset class="gender-group">
-        <legend>Gender</legend>
-        <label><input type="checkbox" name="gender" value="Male" /> Male</label>
-        <label><input type="checkbox" name="gender" value="Female" /> Female</label>
-        <label><input type="checkbox" name="gender" value="Other" /> Other</label>
-      </fieldset>
-      <fieldset class="answer-group">
-        <legend>Yes/No</legend>
-        <button type="button" id="answer-toggle" data-value="No">No</button>
-      </fieldset>
-      <button type="submit">Add</button>
+      <input type="text" id="title-input" placeholder="Task title..." autocomplete="off" required />
+      <textarea id="description-input" placeholder="Description (optional)" rows="2"></textarea>
+      <select id="status-input">
+        <option value="todo">Todo</option>
+        <option value="in-progress">In Progress</option>
+        <option value="done">Done</option>
+      </select>
+      <button type="submit">Add Task</button>
     </form>
-    <ul id="todo-list"></ul>
+    <ul id="task-list"></ul>
   </div>
   <script src="app.js"></script>
 </body>
