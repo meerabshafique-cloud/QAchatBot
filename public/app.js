@@ -3,11 +3,18 @@ const form = document.getElementById('add-form');
 const input = document.getElementById('todo-input');
 const list = document.getElementById('todo-list');
 const answerToggle = document.getElementById('answer-toggle');
+const pronounToggle = document.getElementById('pronoun-toggle');
 
 answerToggle.addEventListener('click', () => {
   const next = answerToggle.dataset.value === 'Yes' ? 'No' : 'Yes';
   answerToggle.dataset.value = next;
   answerToggle.textContent = next;
+});
+
+pronounToggle.addEventListener('click', () => {
+  const next = pronounToggle.dataset.value === 'She' ? 'He' : 'She';
+  pronounToggle.dataset.value = next;
+  pronounToggle.textContent = next;
 });
 
 async function loadTodos() {
@@ -44,6 +51,12 @@ function renderTodos(todos) {
     span.appendChild(document.createTextNode(' '));
     span.appendChild(answerSpan);
 
+    const pronounSpan = document.createElement('span');
+    pronounSpan.className = 'todo-pronoun';
+    pronounSpan.textContent = `(${todo.pronoun === 'He' ? 'He' : 'She'})`;
+    span.appendChild(document.createTextNode(' '));
+    span.appendChild(pronounSpan);
+
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.addEventListener('click', () => deleteTodo(todo.id));
@@ -55,11 +68,11 @@ function renderTodos(todos) {
   });
 }
 
-async function addTodo(text, gender, answer) {
+async function addTodo(text, gender, answer, pronoun) {
   await fetch('/api/todos', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text, gender, answer }),
+    body: JSON.stringify({ text, gender, answer, pronoun }),
   });
   await loadTodos();
 }
@@ -86,11 +99,14 @@ form.addEventListener('submit', (e) => {
     (el) => el.value
   );
   const answer = answerToggle.dataset.value;
-  addTodo(text, gender, answer);
+  const pronoun = pronounToggle.dataset.value;
+  addTodo(text, gender, answer, pronoun);
   input.value = '';
   form.querySelectorAll('input[name="gender"]').forEach((el) => (el.checked = false));
   answerToggle.dataset.value = 'No';
   answerToggle.textContent = 'No';
+  pronounToggle.dataset.value = 'She';
+  pronounToggle.textContent = 'She';
 });
 
 loadTodos();

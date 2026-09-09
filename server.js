@@ -37,12 +37,14 @@ app.post('/api/todos', (req, res) => {
     ? req.body.gender.filter((g) => typeof g === 'string')
     : [];
   const answer = req.body.answer === 'Yes' ? 'Yes' : 'No';
+  const pronoun = req.body.pronoun === 'He' ? 'He' : 'She';
   const todos = readTodos();
   const todo = {
     id: crypto.randomUUID(),
     text,
     gender,
     answer,
+    pronoun,
     done: false,
     createdAt: new Date().toISOString(),
   };
