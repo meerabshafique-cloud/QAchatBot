@@ -83,6 +83,13 @@ async function deleteTask(id) {
   await loadTasks();
 }
 
+async function clearAllTasks() {
+  if (confirm('Delete all tasks?')) {
+    await fetch('/api/tasks', { method: 'DELETE' });
+    await loadTasks();
+  }
+}
+
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   const title = titleInput.value.trim();
@@ -94,5 +101,7 @@ form.addEventListener('submit', (e) => {
   descriptionInput.value = '';
   statusInput.value = 'todo';
 });
+
+document.getElementById('clear-all-btn').addEventListener('click', clearAllTasks);
 
 loadTasks();

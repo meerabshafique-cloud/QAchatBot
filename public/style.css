@@ -24,6 +24,24 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#clear-all-btn {
+  margin-left: auto;
+  padding: 0.5rem 1rem;
+  border: 2px solid #de350b;
+  background: transparent;
+  color: #de350b;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+#clear-all-btn:hover {
+  background: #de350b;
+  color: #fff;
 }
 
 .logo {
@@ -33,8 +51,7 @@ body {
 
 h1 {
   font-size: 1.25rem;
-  margin-top: 0;
-  margin-bottom: 1rem;
+  margin: 0;
 }
 
 #add-form {
