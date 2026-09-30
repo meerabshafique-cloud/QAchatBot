@@ -88,6 +88,11 @@ app.delete('/api/tasks/:id', (req, res) => {
   res.json(removed);
 });
 
+app.delete('/api/tasks', (req, res) => {
+  writeTasks([]);
+  res.status(204).send();
+});
+
 app.listen(PORT, () => {
   console.log(`QAchatBot Task Manager listening on http://localhost:${PORT}`);
 });
